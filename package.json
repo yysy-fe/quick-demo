@@ -1,0 +1,35 @@
+{
+  "name": "quick-demo",
+  "version": "1.0.0",
+  "description": "一个自娱自乐的快速搭建demo运行环境的工具",
+  "main": "index.js",
+  "bin": {
+    "quick-demo": "./bin/quick-demo.js"
+  },
+  "scripts": {
+    "start": "babel src/index.js -o dist/dist.js -w",
+    "build": "babel src/index.js -o dist/dist.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yysy-fe/quick-demo.git"
+  },
+  "author": "yysy-fe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yysy-fe/quick-demo/issues"
+  },
+  "homepage": "https://github.com/yysy-fe/quick-demo#readme",
+  "dependencies": {
+    "commander": "^3.0.2",
+    "inquirer": "^7.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/runtime": "^7.6.3"
+  }
+}
