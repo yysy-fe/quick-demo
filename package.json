@@ -23,6 +23,7 @@
   "homepage": "https://github.com/yysy-fe/quick-demo#readme",
   "dependencies": {
     "commander": "^3.0.2",
+    "download-git-repo": "^3.0.2",
     "inquirer": "^7.0.0"
   },
   "devDependencies": {

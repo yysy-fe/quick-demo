@@ -12,15 +12,20 @@ var _commander = _interopRequireDefault(require("commander"));
 
 var _inquirer = _interopRequireDefault(require("inquirer"));
 
+var _downloadGitRepo = _interopRequireDefault(require("download-git-repo"));
+
 _commander["default"].version(_package["default"].version, '-v, --version', '查看版本号');
 
 _commander["default"].usage('<command> [options]');
 
 var initTemplate = function initTemplate(config) {
   console.log('config', config);
+  (0, _downloadGitRepo["default"])('github:https://github.com/yysy-fe/quick-demo-templates.git', 'test/tmp', function (err) {
+    console.log(err);
+  });
 };
 
-_commander["default"].command('init').description('初始化项目').action(
+var initHandler =
 /*#__PURE__*/
 function () {
   var _ref = (0, _asyncToGenerator2["default"])(
@@ -64,9 +69,17 @@ function () {
     }, _callee);
   }));
 
-  return function (_x) {
+  return function initHandler(_x) {
     return _ref.apply(this, arguments);
   };
-}());
+}();
 
-_commander["default"].parse(process.argv); // console.log(packageJson .version)
+_commander["default"].command('').description('初始化项目').action(initHandler);
+
+_commander["default"].command('init').description('初始化项目').action(initHandler);
+
+_commander["default"].parse(process.argv);
+
+if (_commander["default"].args.length === 0) {
+  initHandler();
+}

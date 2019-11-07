@@ -2,15 +2,19 @@
 import packageJson from '../package.json';
 import program from 'commander';
 import inquirer from 'inquirer';
+import download from 'download-git-repo';
 
 program.version(packageJson.version, '-v, --version', '查看版本号');
 program.usage('<command> [options]');
 
 const initTemplate = config => {
   console.log('config', config)
+  download('github:https://github.com/yysy-fe/quick-demo-templates.git', 'test/tmp', function (err) {
+    console.log(err)
+  })
 };
 
-program.command('init').description('初始化项目').action(async e  =>   {
+const initHandler = async e => {
   const usrInput = await inquirer.prompt([
     {
       type: 'rawlist',
@@ -37,10 +41,12 @@ program.command('init').description('初始化项目').action(async e  =>   {
     }
   ]);
   initTemplate(usrInput);
-});
+};
+program.command('').description('初始化项目').action(initHandler);
+program.command('init').description('初始化项目').action(initHandler);
 
 program.parse(process.argv);
 
-
-
-// console.log(packageJson .version)
+if (program.args.length === 0) {
+  initHandler();
+}
