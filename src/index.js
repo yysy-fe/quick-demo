@@ -3,16 +3,40 @@ import packageJson from '../package.json';
 import program from 'commander';
 import inquirer from 'inquirer';
 import download from 'download-git-repo';
+import fs from 'fs';
+import path from 'path';
+import util from 'util';
 
 program.version(packageJson.version, '-v, --version', '查看版本号');
 program.usage('<command> [options]');
 
-const initTemplate = config => {
-  console.log('config', config)
-  download('github:https://github.com/yysy-fe/quick-demo-templates.git', 'test/tmp', function (err) {
-    console.log(err)
-  })
+const templateDir = __dirname + '/qd-temps';
+
+const initTemplate = () => {
+  return new Promise(resolve => {
+    download('yysy-fe/quick-demo-templates#master', templateDir, function (err) {
+      resolve(err);
+    });
+  });
 };
+
+const errlog = msg => {
+  console.error(msg);
+  return false;
+}
+
+const getTemplate = async (config) => {
+  const { template, projectName } = config;
+  const downTempErr = await initTemplate();
+  if (downTempErr) {
+    return error("获取模板失败");
+  }
+  const sourceDir = path.join(templateDir, template);
+  const targetDir = path.join('./', projectName)
+  if (fs.existsSync(targetDir)) return error(`当前目录已存在【${projectName}】文件夹`);
+  fs.renameSync(sourceDir, targetDir);
+  return true;
+}
 
 const initHandler = async e => {
   const usrInput = await inquirer.prompt([
@@ -40,7 +64,13 @@ const initHandler = async e => {
       message: 'Please enter the author name: '
     }
   ]);
-  initTemplate(usrInput);
+
+  await getTemplate(usrInput);
+
+  
+
+  
+
 };
 program.command('').description('初始化项目').action(initHandler);
 program.command('init').description('初始化项目').action(initHandler);
