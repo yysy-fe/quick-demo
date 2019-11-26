@@ -62,25 +62,17 @@ function () {
               break;
             }
 
-            return _context.abrupt("return", error("获取模板失败"));
+            return _context.abrupt("return", errlog("获取模板失败"));
 
           case 6:
             sourceDir = _path["default"].join(templateDir, template);
-            targetDir = _path["default"].join('./', projectName);
+            targetDir = _path["default"].join('./', projectName); // if (fs.existsSync(targetDir)) return errlog(`当前目录已存在【${projectName}】文件夹`);
 
-            if (!_fs["default"].existsSync(targetDir)) {
-              _context.next = 10;
-              break;
-            }
-
-            return _context.abrupt("return", error("\u5F53\u524D\u76EE\u5F55\u5DF2\u5B58\u5728\u3010".concat(projectName, "\u3011\u6587\u4EF6\u5939")));
-
-          case 10:
             _fs["default"].renameSync(sourceDir, targetDir);
 
             return _context.abrupt("return", true);
 
-          case 12:
+          case 10:
           case "end":
             return _context.stop();
         }
@@ -114,8 +106,12 @@ function () {
               name: 'projectName',
               message: 'Please enter the project name: ',
               validate: function validate(value) {
+                var targetDir = _path["default"].join('./', value);
+
                 if (value === '') {
                   return '请输入项目名';
+                } else if (_fs["default"].existsSync(targetDir)) {
+                  return "\u5F53\u524D\u76EE\u5F55\u5DF2\u5B58\u5728\u3010".concat(value, "\u3011\u6587\u4EF6\u5939");
                 }
 
                 return true;

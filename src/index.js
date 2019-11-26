@@ -29,11 +29,10 @@ const getTemplate = async (config) => {
   const { template, projectName } = config;
   const downTempErr = await initTemplate();
   if (downTempErr) {
-    return error("获取模板失败");
+    return errlog("获取模板失败");
   }
   const sourceDir = path.join(templateDir, template);
   const targetDir = path.join('./', projectName)
-  if (fs.existsSync(targetDir)) return error(`当前目录已存在【${projectName}】文件夹`);
   fs.renameSync(sourceDir, targetDir);
   return true;
 }
@@ -53,8 +52,11 @@ const initHandler = async e => {
       name: 'projectName',
       message: 'Please enter the project name: ',
       validate: value => {
+        const targetDir = path.join('./', value)
         if (value === '') {
           return '请输入项目名';
+        } else if (fs.existsSync(targetDir)) {
+          return `当前目录已存在【${value}】文件夹`;
         }
         return true;
       }
