@@ -11,6 +11,7 @@ program.version(packageJson.version, '-v, --version', '查看版本号');
 program.usage('<command> [options]');
 
 const templateDir = __dirname + '/qd-temps';
+let targetDir = path.join('./');
 
 const initTemplate = () => {
   return new Promise(resolve => {
@@ -25,6 +26,25 @@ const errlog = msg => {
   return false;
 }
 
+const updateTemp = async (config) => {
+  return new Promise(res => {
+    fs.readFile(path.join(targetDir, 'package.json'), {}, (err, data) => {
+      if (err) res(errlog(err)); 
+      let json = JSON.parse(data);
+      json.name = 'test4';
+      json.author = 'yy';
+      json = JSON.stringify(json, null, 2);
+      fs.writeFile('package.json', json, 'utf8', (err, data) => {
+        if (err) {
+          res(errlog(err))
+        } else {
+          res(true);
+        }
+      });
+    });
+  });
+}
+
 const getTemplate = async (config) => {
   const { template, projectName } = config;
   const downTempErr = await initTemplate();
@@ -32,19 +52,22 @@ const getTemplate = async (config) => {
     return errlog("获取模板失败");
   }
   const sourceDir = path.join(templateDir, template);
-  const targetDir = path.join('./', projectName)
+  targetDir = path.join('./', projectName)
   fs.renameSync(sourceDir, targetDir);
+  fs.renameSync(templateDir, path.resolve(templateDir, '../temp-del'));
+
+
   return true;
 }
 
-const initHandler = async e => {
-  const usrInput = await inquirer.prompt([
+const getUserInput = () => {
+  return inquirer.prompt([
     {
       type: 'rawlist',
       name: 'template',
       choices: [
+        'react',
         'normal',
-        'react'
       ]
     },
     {
@@ -66,9 +89,14 @@ const initHandler = async e => {
       message: 'Please enter the author name: '
     }
   ]);
+}
+
+const initHandler = async e => {
+  const userInput = await getUserInput();
 
   await getTemplate(usrInput);
-
+  updateTemp(userInput);
+  
   
 
   
