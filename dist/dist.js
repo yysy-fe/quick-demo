@@ -173,7 +173,7 @@ function () {
           case 2:
             userInput = _context3.sent;
             _context3.next = 5;
-            return getTemplate(usrInput);
+            return getTemplate(userInput);
 
           case 5:
             updateTemp(userInput);

@@ -94,7 +94,7 @@ const getUserInput = () => {
 const initHandler = async e => {
   const userInput = await getUserInput();
 
-  await getTemplate(usrInput);
+  await getTemplate(userInput);
   updateTemp(userInput);
   
   
