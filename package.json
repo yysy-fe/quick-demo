@@ -1,15 +1,10 @@
 {
   "name": "quick-demo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "一个自娱自乐的快速搭建demo运行环境的工具",
   "main": "index.js",
   "bin": {
     "quick-demo": "./bin/quick-demo.js"
-  },
-  "scripts": {
-    "start": "babel src/index.js -o dist/dist.js -w",
-    "build": "babel src/index.js -o dist/dist.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -21,16 +16,30 @@
     "url": "https://github.com/yysy-fe/quick-demo/issues"
   },
   "homepage": "https://github.com/yysy-fe/quick-demo#readme",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cross-env NODE_ENV=development webpack --config webpack.config.js --watch --progress",
+    "build": "cross-env NODE_ENV=production webpack --config webpack.config.js --progress"
+  },
+  "keywords": [
+    "quick-demo"
+  ],
+  "devDependencies": {
+    "cross-env": "^6.0.3"
+  },
   "dependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-transform-runtime": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/runtime": "^7.5.5",
+    "babel-loader": "^8.0.6",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.6",
     "commander": "^3.0.2",
     "download-git-repo": "^3.0.2",
     "inquirer": "^7.0.0"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.6.4",
-    "@babel/core": "^7.6.4",
-    "@babel/plugin-transform-runtime": "^7.6.2",
-    "@babel/preset-env": "^7.6.3",
-    "@babel/runtime": "^7.6.3"
   }
 }

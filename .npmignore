@@ -5,3 +5,6 @@
 .gitignore
 .npmignore
 .babelrc
+tsconfig.json
+webpack.config.js
+lib
