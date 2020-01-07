@@ -5,12 +5,12 @@ import inquirer from 'inquirer';
 import download from 'download-git-repo';
 import fs from 'fs';
 import path from 'path';
-import util from 'util';
+import { delDir } from './common/util';
 
 program.version(packageJson.version, '-v, --version', '查看版本号');
 program.usage('<command> [options]');
 
-const templateDir = __dirname + '/qd-temps';
+const templateDir = './qd-temps';
 let targetDir = path.join('./');
 
 const initTemplate = () => {
@@ -27,14 +27,15 @@ const errlog = msg => {
 }
 
 const updateTemp = async (config) => {
+  const { projectName, author } = config;
   return new Promise(res => {
     fs.readFile(path.join(targetDir, 'package.json'), {}, (err, data) => {
       if (err) res(errlog(err)); 
       let json = JSON.parse(data);
-      json.name = 'test4';
-      json.author = 'yy';
+      json.name = projectName;
+      json.author = author;
       json = JSON.stringify(json, null, 2);
-      fs.writeFile('package.json', json, 'utf8', (err, data) => {
+      fs.writeFile(path.join(targetDir, 'package.json'), json, 'utf8', (err, data) => {
         if (err) {
           res(errlog(err))
         } else {
@@ -54,9 +55,7 @@ const getTemplate = async (config) => {
   const sourceDir = path.join(templateDir, template);
   targetDir = path.join('./', projectName)
   fs.renameSync(sourceDir, targetDir);
-  fs.renameSync(templateDir, path.resolve(templateDir, '../temp-del'));
-
-
+  delDir(templateDir);
   return true;
 }
 
