@@ -1,0 +1,7 @@
+/node_modules
+/dist/qd-temps
+/dist/temp-del 
+/src
+.gitignore
+.npmignore
+.babelrc
