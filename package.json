@@ -1,6 +1,6 @@
 {
   "name": "quick-demo",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "一个自娱自乐的快速搭建demo运行环境的工具",
   "main": "index.js",
   "bin": {
